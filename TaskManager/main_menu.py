@@ -1,4 +1,4 @@
-def main_menu(cur_user, user_tasks):
+def main_menu_funct():
     while True:
         try:
             print('''
@@ -12,7 +12,7 @@ def main_menu(cur_user, user_tasks):
 8) Save
 0) Quit\n
 ''')
-        
+            
             selection = int(input("Select an option above: "))
             if selection < 8:
                 return selection

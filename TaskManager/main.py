@@ -1,54 +1,49 @@
 #  Robert DeRosa
-#  Python Advanced: Task Manager Modules
+#  Python Advanced: Task Manager Classes
 #  --Task Manager with Uses--
-from main_menu import *
-from create_task import *
-from edit_task import *
-from read import *
-from users import *
 
-config = "json"
-if config == "json":
-    import json as serializer
-    w,r = 'wt','rt'
-elif config == "pickle":
-    import pickle as serializer
-    w,r = 'wb','rb'
-else:
-    raise ImportError
+from shared import Shared
+from main_menu import main_menu_funct
+from users import Users
+from create import Create
+from edit import Edit
+from read import Read
 
-save_file = "usertasks.txt"
-user_tasks = serializer.load(open(save_file, r))
-
-save_config = (save_file,serializer,r,w)
+shared = Shared()
+users = Users(shared)
 
 
-def Main():
-    cur_user = add_user(user_tasks,save_config)
+
+def main():
+    cur_user = users.add_user()
     while True:
+        create = Create(shared,cur_user)
+        edit = Edit(shared,cur_user)
+        read = Read(shared,cur_user)
+        
         print(f"\nCurrent User: {cur_user}")
-        choice = main_menu(cur_user,user_tasks)
+        choice = main_menu_funct()
 
         if choice == 0:
             break
         if choice == 1:
-            create(cur_user, user_tasks)
+            create.create()
         if choice == 2:
-            read_by_date(cur_user, user_tasks)
+            read.read_by_date()
         if choice == 3:
-            read_all(cur_user, user_tasks)
+            read.read_all()
         if choice == 4:
-            modify(cur_user, user_tasks)
+            edit.modify()
         if choice == 5:
-            remove(cur_user, user_tasks)
+            edit.remove()
         if choice == 6:
-            cur_user = add_user(user_tasks, save_config)
+            cur_user = users.add_user()
         if choice == 7:
-            cur_user = load_user(user_tasks, save_config)
+            cur_user = users.load_user()
         if choice == 8:
-            save(save_config)
+            save()
     
-Main()
+main()
 
 print("-Program Complete-")
 
